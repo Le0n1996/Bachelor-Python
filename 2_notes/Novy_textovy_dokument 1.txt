@@ -1,0 +1,75 @@
+class ListElement:
+    def __init__(self, key):
+        self.key = key
+        self.nxt = None
+
+    def AddAfter(self, x):
+        X = ListElement(x)
+        X.nxt, self.nxt = self.nxt, X
+
+    def DelNext(self):
+        self.nxt = self.nxt.nxt
+
+    def PrintKeys(self):
+        s = ""
+        cur = self
+        while True:
+            s += str(cur.key)
+            cur = cur.nxt
+            if cur:
+                s += " "
+            else:
+                break
+        return s
+
+    def __str__(self):
+        return str(self.key)
+
+
+class ConList:
+    def __init__(self):
+        self.first = None
+        self.del_support = None
+
+    def add(self, key):
+        f = ListElement(key)
+        f.nxt = self.first
+        self.first = f
+
+    def add_after(self, key, el):
+        if el:
+            el.AddAfter(key)
+
+    def find(self, key):
+        f = self.first
+        self.del_support = None
+        while True:
+            if f.key == key:
+                return f
+            else:
+                self.del_support = f
+                f = f.nxt
+            if not f:
+                return None
+
+    def delete(self, key):
+        f = self.find(key)
+        if f:
+            if self.del_support:
+                self.del_support.DelNext()
+                return f
+            else:
+                self.first = f.nxt
+                return f
+        else:
+            return None
+
+    def __str__(self):
+        return self.first.PrintKeys()
+
+
+while True:
+    s = input()
+    if s == 'END':
+        break
+    exec(s)

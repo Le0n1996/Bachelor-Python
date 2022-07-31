@@ -1,0 +1,157 @@
+A
+
+fi = open('input.txt', 'r')
+fo = open('output.txt', 'w')
+
+A = fi.read().split()
+
+for i in range(0, len(A)):
+    A[i] = int(A[i])
+
+while True:
+    changes = False
+    for i in range(0, len(A) - 1):
+        if A[i] > A[i + 1]:
+            A[i], A[i + 1] = A[i + 1], A[i]
+            changes = True
+    if not changes:
+        break
+
+for i in range(0, len(A) - 1):
+    fo.write(str(A[i]) + " ")
+fo.write(str(A[len(A) - 1]))
+
+fi.close()
+fo.close()
+
+
+B
+
+fi = open('input.txt', 'r')
+fo = open('output.txt', 'w')
+
+A = fi.read().split()
+
+for i in range(0, len(A)):
+    A[i] = int(A[i])
+
+
+def my_sort(lower, upper):
+    lo = lower
+    up = upper
+    pivot = A[(up + lo) // 2]
+    while lo <= up:
+        while A[lo] < pivot:
+            lo += 1
+        while A[up] > pivot:
+            up += -1
+        if lo <= up:
+            A[lo], A[up] = A[up], A[lo]
+            lo += 1
+            up += -1
+    if lower < up:
+        my_sort(lower, up)
+    if lo < upper:
+        my_sort(lo, upper)
+
+
+my_sort(0, len(A) - 1)
+
+for i in range(0, len(A) - 1):
+    fo.write(str(A[i]) + " ")
+fo.write(str(A[len(A) - 1]))
+
+fi.close()
+fo.close()
+
+C
+
+fi = open('input.txt', 'r')
+fo = open('output.txt', 'w')
+
+A = fi.read().split()
+
+for i in range(0, len(A)):
+    A[i] = int(A[i])
+
+
+def heapify(n, i):
+    # Find largest among root and children
+    largest = i
+    l = 2 * i + 1
+    r = 2 * i + 2
+
+    if l < n and A[i] < A[l]:
+        largest = l
+
+    if r < n and A[largest] < A[r]:
+        largest = r
+
+    # If root is not largest, swap with largest and continue heapifying
+    if largest != i:
+        A[i], A[largest] = A[largest], A[i]
+        heapify(n, largest)
+
+
+def my_sort():
+    n = len(A)
+
+    # Build max heap
+    for i in range(n, 0, -1):
+        heapify(n, i)
+    print(A)
+
+    A[n-1], A[0] = A[0], A[n-1]
+    print(A)
+    # heapify root element
+    heapify(n-1, 0)
+    for i in range(n - 1, 0, -1):
+        # swap
+        A[i], A[0] = A[0], A[i]
+        print(A)
+        # heapify root element
+        heapify(i, 0)
+
+
+my_sort()
+
+for i in range(0, len(A) - 1):
+    fo.write(str(A[i]) + " ")
+fo.write(str(A[len(A) - 1]))
+
+fi.close()
+fo.close()
+
+
+D
+
+fi = open('input.txt', 'r')
+fo = open('output.txt', 'w')
+
+A = fi.read().split()
+B = []
+C = []
+
+for i in range(0, len(A), 2):
+    B.append(int(A[i]))
+    C.append(A[i + 1])
+
+while True:
+    changes = False
+    for i in range(0, len(B) - 1):
+        if B[i] > B[i + 1]:
+            B[i], B[i + 1] = B[i + 1], B[i]
+            C[i], C[i + 1] = C[i + 1], C[i]
+            changes = True
+        elif B[i] == B[i + 1] and C[i] < C[i + 1]:
+            B[i], B[i + 1] = B[i + 1], B[i]
+            C[i], C[i + 1] = C[i + 1], C[i]
+            changes = True
+    if not changes:
+        break
+
+for i in range(0, len(B)):
+    fo.write(str(B[i]) + " " + C[i] + "\n")
+
+fi.close()
+fo.close()
